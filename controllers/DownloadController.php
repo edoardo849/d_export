@@ -4,6 +4,7 @@
  * @copyright Copyright &copy; Daviom 2011-2013
  * Date: 2/20/13 - 1:47 PM
  */
+ini_set('memory_limit', '-1');
 
 class DownloadController extends Controller
 {
@@ -67,16 +68,17 @@ class DownloadController extends Controller
             $reportName = ($downloadForm->report_name)?$downloadForm->report_name:$report->name;
             $dataProvider = $model->search(false)->getData();
 
-
-
             $headers = array();
             $csvData = array();
+
+
 
             if($report->include_headers)
             {
                 foreach($report->parameters as $parameter)
                     foreach($parameter as $header=>$value)
                         $headers[] = $header;
+
             }
 
 
@@ -88,7 +90,7 @@ class DownloadController extends Controller
                 foreach($report->parameters as $parameter)
                     foreach($parameter as $header=>$value)
                     {
-                        $value = "isset({$value})?{$value}:''";
+                        $value = "isset({$value})?{$value}:'  '";
                         $row[] = $this->evaluateExpression($value, array('data'=>$data));
                     }
                 array_push($csvData, $row);
@@ -96,13 +98,19 @@ class DownloadController extends Controller
             }
 
 
+            $exportLog = new ExportLog;
+            $exportLog->setAttributes(array(
+                'export_id'=>$report->id,
+                'user_id'=>(Yii::app()->user->isGuest)?Yii::app()->getModule('d_export')->adminUserId:Yii::app()->user->id,
+                'timestamp'=>new CDbExpression('NOW()'),
+                'ip_address'=>$_SERVER['REMOTE_ADDR']
+            ));
+            if(!$exportLog->save())
+                throw new CHttpException(500,'Not able to save the logger');
+
 
             $this->renderPartial('csv', array('csvData'=>$csvData, 'headers'=>$headers, 'fileName'=>$reportName));
 
-
-
-
-            //$this->render('export', array('model'=>$model,'modelAttributes'=>$modelAttributes, 'modelName'=>$modelName));
         }
 
     }
@@ -164,7 +172,9 @@ class DownloadController extends Controller
             }
 
 
-            $this->renderPartial('csv', array('csvData'=>$csvData, 'headers'=>$headers));
+
+
+            $this->renderPartial('csv', array('csvData'=>ob_get_clean(), 'headers'=>$headers));
 
         }
 

@@ -16,6 +16,7 @@
  */
 class ExportLog extends CActiveRecord
 {
+    public $reportModelName;
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -47,7 +48,7 @@ class ExportLog extends CActiveRecord
 			array('ip_address', 'length', 'max'=>128),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
-			array('id, export_id, user_id, timestamp, ip_address', 'safe', 'on'=>'search'),
+			array('reportModelName, id, export_id, user_id, timestamp, ip_address', 'safe', 'on'=>'search'),
 		);
 	}
 
@@ -75,6 +76,7 @@ class ExportLog extends CActiveRecord
 			'user_id' => 'User',
 			'timestamp' => 'Timestamp',
 			'ip_address' => 'Ip Address',
+            'reportModelName'=>'Model Name'
 		);
 	}
 
@@ -89,14 +91,24 @@ class ExportLog extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
+        $criteria->with = array('report');
+
 		$criteria->compare('id',$this->id,true);
 		$criteria->compare('export_id',$this->export_id);
 		$criteria->compare('user_id',$this->user_id);
 		$criteria->compare('timestamp',$this->timestamp,true);
 		$criteria->compare('ip_address',$this->ip_address,true);
 
+        $criteria->compare('report.model_name',$this->reportModelName);
+
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
 	}
+
+    public function getIpLink()
+    {
+        return CHtml::link($this->ip_address, array('http://whatismyipaddress.com/ip/'.$this->ip_address),array('target'=>'_blank'));
+    }
+
 }

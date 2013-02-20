@@ -30,6 +30,12 @@ class DExportModule extends CWebModule
      */
     public $exportReportBehaviors = array();
 
+    /**
+     * The id of the administrator as-in the table "User"
+     * @var string|int $adminUserId
+     */
+    public $adminUserId;
+
     public function init()
     {
         if($this->install)
