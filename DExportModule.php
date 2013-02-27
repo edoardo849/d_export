@@ -96,6 +96,7 @@ class DExportModule extends CWebModule
                 $sql = "CREATE TABLE IF NOT EXISTS `{$prefix}export_log` (
                   `id` BIGINT NOT NULL AUTO_INCREMENT ,
                   `export_id` INT NOT NULL ,
+                  `export_filter` MEDIUMTEXT NOT NULL ,
                   `user_id` {$userIdType} NOT NULL ,
                   `timestamp` TIMESTAMP NOT NULL ,
                   `ip_address` VARCHAR(128) NOT NULL ,

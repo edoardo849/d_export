@@ -16,7 +16,7 @@ class loadModal extends CAction
 
             $parameters = $data->getParam($modelName);
             $model = new DownloadForm;
-                $model->report_name = date('Y-m-d');
+                $model->report_name = $modelName.'_report_'.date('Y-m-d_H-m');
             $model->search_parameters = CJSON::encode($parameters);
 
             $this->controller->renderPartial('application.modules.d_export.components.exportWidget.views._downloadModalForm',array(

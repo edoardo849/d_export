@@ -5,7 +5,6 @@
  * Date: 2/20/13 - 1:47 PM
  */
 ini_set('memory_limit', '-1');
-
 class DownloadController extends Controller
 {
     /**
@@ -103,7 +102,8 @@ class DownloadController extends Controller
                 'export_id'=>$report->id,
                 'user_id'=>(Yii::app()->user->isGuest)?Yii::app()->getModule('d_export')->adminUserId:Yii::app()->user->id,
                 'timestamp'=>new CDbExpression('NOW()'),
-                'ip_address'=>$_SERVER['REMOTE_ADDR']
+                'ip_address'=>$_SERVER['REMOTE_ADDR'],
+                'export_filter'=>$downloadForm->search_parameters,
             ));
             if(!$exportLog->save())
                 throw new CHttpException(500,'Not able to save the logger');
