@@ -39,8 +39,15 @@ class ExportWidget extends CWidget
     {
         $assets = Yii::app()->getAssetManager()->publish( Yii::getPathOfAlias(
             'application.modules.d_export.components.exportWidget' ) . '/assets' );
-        $cs = Yii::app()->getClientScript();
+        $cs = Yii::app()->clientScript;
         $cs->registerScriptFile( $assets . '/js/exportWidget.js');
+
+
+        if($cs->getPackageBaseUrl('jquery.ui') === false) {
+            if($cs->getPackageBaseUrl('jquery.ui.min')===false)
+                $cs->registerCoreScript('jquery.ui.min');
+        }
+
 
         $this->render('exportButton', array(
             'searchFormId'=>$this->searchFormId,

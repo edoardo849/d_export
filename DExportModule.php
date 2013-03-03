@@ -7,10 +7,16 @@
 class DExportModule extends CWebModule
 {
     /**
-     * Roles that can gain access to the Module
+     * Roles that can access to the Module
      * @var $accessPermissionRoles
      */
-    public $accessPermissionRoles;
+    public $accessPermissionRoles = array();
+
+    /**
+     * Users that can access the module
+     * @var $accessPermissionUsers
+     */
+    public $accessPermissionUsers = array();
 
     /**
      * Name of the User Module
@@ -30,6 +36,12 @@ class DExportModule extends CWebModule
      */
     public $exportReportBehaviors = array();
 
+    public $exportWidgetViewPath = 'd_export.views.exportWidget';
+    /**
+     * @var string $layout The layout to be used in all controllers, defaults to column1
+     */
+    public $layout = '//layouts/column1';
+
     /**
      * The id of the administrator as-in the table "User"
      * @var string|int $adminUserId
@@ -38,6 +50,7 @@ class DExportModule extends CWebModule
 
     public function init()
     {
+        $this->defaultController = 'ExportReport';
         if($this->install)
         {
             $this->createTables();
@@ -53,6 +66,7 @@ class DExportModule extends CWebModule
     {
         if(parent::beforeControllerAction($controller, $action))
         {
+            $controller->layout = $this->layout;
             // this method is called before any module controller action is performed
             // you may place customized code here
             return true;

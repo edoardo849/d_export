@@ -10,7 +10,6 @@ class loadModal extends CAction
     {
         if(Yii::app()->request->isAjaxRequest)
         {
-
             $data = Yii::app()->getRequest();
             $modelName = $data->getParam('ModelName');
 
@@ -19,7 +18,7 @@ class loadModal extends CAction
                 $model->report_name = $modelName.'_report_'.date('Y-m-d_H-m');
             $model->search_parameters = CJSON::encode($parameters);
 
-            $this->controller->renderPartial('application.modules.d_export.components.exportWidget.views._downloadModalForm',array(
+            $this->controller->renderPartial(Yii::app()->getModule('d_export')->exportWidgetViewPath.'._downloadModalForm',array(
                 'modelName'=>$modelName,
                 'model'=>$model
             ));

@@ -46,6 +46,9 @@ class ExportLogController extends Controller
             array('allow',  // allow all users to perform 'index' and 'view' actions
                 'roles'=>Yii::app()->getModule('d_export')->accessPermissionRoles,
             ),
+            array('allow',  // allow all users to perform 'index' and 'view' actions
+                'users'=>Yii::app()->getModule('d_export')->accessPermissionUsers,
+            ),
 
             array('deny',  // deny all users
                 'users'=>array('*'),

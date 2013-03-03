@@ -8,11 +8,6 @@ ini_set('memory_limit', '-1');
 ini_set('max_execution_time', 300);
 class ExportReportController extends Controller
 {
-    /**
-     * @var string the default layout for the views. Defaults to '//layouts/column2', meaning
-     * using two-column layout. See 'protected/views/layouts/column2.php'.
-     */
-    public $layout='//layouts/column1';
 
     /**
      * @return array action filters
@@ -47,6 +42,9 @@ class ExportReportController extends Controller
         return array(
             array('allow',  // allow all users to perform 'index' and 'view' actions
                 'roles'=>Yii::app()->getModule('d_export')->accessPermissionRoles,
+            ),
+            array('allow',  // allow all users to perform 'index' and 'view' actions
+                'users'=>Yii::app()->getModule('d_export')->accessPermissionUsers,
             ),
 
             array('deny',  // deny all users

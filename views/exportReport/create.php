@@ -1,36 +1,18 @@
 <?php
-//Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/formDuplicate.js', CClientScript::POS_HEAD);
-$this->portletsTop['PageTitle'] = array('text'=>Yii::t('app', 'New Report'), 'icon'=>'glyphicons_181_download_alt');
-
+/* @var $this OrganizationController */
+/* @var $model Organization */
 
 $this->breadcrumbs=array(
-    Yii::t('app', 'Reports')=>array('inboundDuration/index'),
-    Yii::t('app', 'New Report')
-
+	'Reports'=>array('index'),
+	'Create',
 );
 
+$this->menu=array(
+	array('label'=>'List Reports', 'url'=>array('index')),
+	array('label'=>'Manage Reports', 'url'=>array('admin')),
+);
 ?>
-<div class="row-fluid">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title">
-                <span class="icon">
-                    <i class="icon-cog"></i>
-                </span>
-                <h5>
-                    <?php echo Yii::t('app', 'New Report') ?>
-                </h5>
 
-            </div>
-            <div class="widget-content">
-                <?php  $this->renderPartial('_form',array(
-                'model'=>$model,
-            )); ?>
+<h1>Create Report</h1>
 
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

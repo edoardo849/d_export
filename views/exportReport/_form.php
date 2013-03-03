@@ -1,36 +1,43 @@
-
-
 <?php
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/formDuplicate-min.js', CClientScript::POS_HEAD);
+/* @var $this ReportController */
+/* @var $model Report */
+/* @var $form CActiveForm */
 
-$form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
-    'id'=>'export-report-form',
-    'enableAjaxValidation'=>true,
+//Yii::app()->clientScript->registerScriptFile(Yii::getPathOfAlias('application.modules.d_export.assets.js').'/formDuplicate-min.js');
+$assets = Yii::app()->getAssetManager()->publish( Yii::getPathOfAlias(
+    'application.modules.d_export' ) . '/assets' );
+$cs = Yii::app()->clientScript;
+$cs->registerScriptFile( $assets . '/js/formDuplicate-min.js');
+?>
+
+<div class="form">
+
+<?php $form=$this->beginWidget('CActiveForm', array(
+	'id'=>'organization-form',
+	'enableAjaxValidation'=>false,
 )); ?>
 
-<p class="help-block">Fields with <span class="required">*</span> are required.</p>
+	<p class="note">Fields with <span class="required">*</span> are required.</p>
 
-<?php echo $form->errorSummary($model); ?>
+	<?php echo $form->errorSummary($model); ?>
 
-<div class="row-fluid">
-    <div class="span6">
-        <?php echo $form->labelEx($model, 'name') ?>
-        <?php echo $form->textField($model, 'name', array('class'=>'span12')) ?>
-        <?php echo $form->error($model, 'name') ?>
+	<div class="row">
+		<?php echo $form->labelEx($model,'name'); ?>
+		<?php echo $form->textField($model,'name',array('size'=>60,'maxlength'=>256)); ?>
+		<?php echo $form->error($model,'name'); ?>
+	</div>
+    <div class="row">
+        <?php echo $form->labelEx($model,'include_headers'); ?>
+        <?php echo $form->dropDownList($model,'include_headers',array(0=>'No', 1=>'Yes'),array('empty'=>'---')); ?>
+        <?php echo $form->error($model,'include_headers'); ?>
     </div>
-    <div class="span4">
-        <?php echo $form->labelEx($model, 'model_name') ?>
-        <?php echo $form->dropDownList($model, 'model_name',CHtml::listData(ExportReport::getAllModelsList(), 'id', 'name'),array('class'=>'span12', 'empty'=>'---')) ?>
-        <?php echo $form->error($model, 'model_name') ?>
-    </div>
-    <div class="span2">
-        <?php echo $form->labelEx($model, 'include_headers') ?>
-        <?php echo $form->dropDownList($model, 'include_headers',array(0=>Yii::t('app', 'No'), 1=>Yii::t('app', 'Yes')),array('class'=>'span12', 'empty'=>'---')) ?>
-        <?php echo $form->error($model, 'include_headers') ?>
-    </div>
-</div>
-<div class="row-fluid">
-    <div class="span12">
+
+	<div class="row">
+		<?php echo $form->labelEx($model,'model_name'); ?>
+        <?php echo $form->dropDownList($model, 'model_name',CHtml::listData(ExportReport::getAllModelsList(), 'id', 'name'),array('empty'=>'---')) ?>
+		<?php echo $form->error($model,'model_name'); ?>
+	</div>
+    <div class="row">
         <table id="parametersTable" class="span12">
             <thead>
             <th><?php echo CHtml::label('Header', 'parametersTable')?></th>
@@ -59,18 +66,11 @@ $form=$this->beginWidget('bootstrap.widgets.TbActiveForm',array(
             </tbody>
         </table>
     </div>
-    <div class="span6">
 
-    </div>
-
-</div>
-<div class="form-actions">
-    <?php $this->widget('bootstrap.widgets.TbButton', array(
-    'buttonType'=>'submit',
-    'type'=>'primary',
-    'label'=>$model->isNewRecord ? 'Create' : 'Save',
-
-)); ?>
-</div>
+	<div class="row buttons">
+		<?php echo CHtml::submitButton($model->isNewRecord ? 'Create' : 'Save'); ?>
+	</div>
 
 <?php $this->endWidget(); ?>
+
+</div><!-- form -->

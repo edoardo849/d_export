@@ -1,36 +1,18 @@
 <?php
-//Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/formDuplicate.js', CClientScript::POS_HEAD);
-$this->portletsTop['PageTitle'] = array('text'=>$model->name, 'icon'=>'glyphicons_181_download_alt');
-
+/* @var $this OrganizationController */
+/* @var $model Organization */
 
 $this->breadcrumbs=array(
-    Yii::t('app', 'Export Report')=>array('d_export/exportReport/index'),
-    $model->name
-
+    'Reports'=>array('index'),
+    'Create',
 );
 
+$this->menu=array(
+    array('label'=>'List Reports', 'url'=>array('index')),
+    array('label'=>'Delete Report', 'url'=>'#', 'linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
+);
 ?>
-<div class="row-fluid">
-    <div class="span12">
-        <div class="widget-box">
-            <div class="widget-title">
-                <span class="icon">
-                    <i class="icon-cog"></i>
-                </span>
-                <h5>
-                    <?php echo $model->name; ?>
-                </h5>
 
-            </div>
-            <div class="widget-content">
-                <?php  $this->renderPartial('_form',array(
-                'model'=>$model,
-            )); ?>
+<h1>View Report "<?php echo $model->name?>"</h1>
 
-            </div>
-        </div>
-    </div>
-
-</div>
-
-
+<?php echo $this->renderPartial('_form', array('model'=>$model)); ?>

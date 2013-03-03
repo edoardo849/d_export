@@ -1,65 +1,64 @@
-
 <?php
+/* @var $this OrganizationController */
+/* @var $dataProvider CActiveDataProvider */
 
-
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/loadView-min.js', CClientScript::POS_HEAD);
-Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/gridRefresh-min.js', CClientScript::POS_HEAD);
-
-$this->portletsTop['PageTitle']=array('text'=>Yii::t('app','Report Logger') );
-
-//$this->portletsTop['TopButtons']=array('buttons'=>'array()');
-
-    $this->breadcrumbs=array(
-	    Yii::t('app', 'Report Loggers'),
+$this->breadcrumbs=array(
+    'Report Log',
 );
 
+
 ?>
-<div class="row-fluid">
 
+<h1>Report Log</h1>
 
-    <div class="span4">
-        <div class="widget-box">
-            <div class="widget-title">
-                <span class="icon">
-                    <i class="icon-search"></i>
-                </span>
-                <h5><?php echo Yii::t('app', 'Search')?></h5>
-            </div>
-            <div class="widget-content">
-                <?php  $this->renderPartial('_search',array(
-                'model'=>$model,
-            )); ?>
-            </div>
+<?php echo CHtml::link('Advanced Search','#',array('class'=>'search-button')); ?>
+<div class="search-form" style="display:none">
+    <?php $this->renderPartial('_search',array(
+    'model'=>$model,
+)); ?>
+</div><!-- search-form -->
 
-        </div>
-    </div>
-    <div class="span8">
-        <div class="widget-box">
-            <div class="widget-title">
-                <span class="icon">
-                    <i class="icon-file"></i>
-                </span>
-                <h5>
-                    <a class="loadView defaultLoad" href="#" data-container="#export-log-list" id="defaultLoad" data-action="<?php echo CController::createUrl('exportLog/ajaxView')?>" >
-                        <?php echo Yii::t('app', 'Report Logs');?>
-                    </a>
-                </h5>
-                <div class="buttons">
-                    <a class="btn btn-mini refreshGrid" data-grid="export-log-grid" href="#"><i class="icon-refresh"></i> <?php echo Yii::t('app', 'Refresh')?></a>
-
-                </div>
-
-
-
-                <script type="text/javascript">
-                    $('.defaultLoad').trigger('click');
-                </script>
-            </div>
-            <div class="widget-content" id="export-log-list">
-
-
-            </div>
-        </div>
-    </div>
-
-</div>
+<?php $this->widget('zii.widgets.grid.CGridView', array(
+    'id'=>'export-log-grid',
+    'dataProvider'=>$model->search(),
+    'columns'=>array(
+        array(
+            'name'=>'export_id',
+            'value'=>'CHtml::link($data->report->name, array("exportReport/view", "id"=>$data->export_id))',
+            'type'=>'raw'
+        ),
+        'user_id',
+        array(
+            'name'=>'export_filter',
+            'value'=>array($model, 'renderFilter'),
+            'type'=>'raw'
+        ),
+        'timestamp',
+        array(
+            'name'=>'ip_address',
+            'value'=>'$data->ipLink',
+            'type'=>'raw'
+        ),
+    ),
+)); ?>
+<?php
+Yii::app()->clientScript->registerScript('search', "
+$('.search-button').click(function(){
+	$('.search-form').toggle();
+	console.log('click')
+	return false;
+});
+$('#export-log-search').on('keyup', function(){
+    $.fn.yiiGridView.update('export-log-grid', {
+        data: $(this).serialize()
+    });
+    return false;
+});
+$('#export-log-search').submit(function(){
+    $.fn.yiiGridView.update('export-log-grid', {
+        data: $(this).serialize()
+    });
+    return false;
+});
+");
+?>

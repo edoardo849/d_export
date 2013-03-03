@@ -54,7 +54,9 @@ function ExportWidget(){
     };
     this.showModal = function($data){
         if($this.devMode) console.log('Showing View: ');
-        $this.modal.html('').html($data).modal('show');
+        var $modal = $this.modal.html('').html($data);
+        if(typeof $modal.modal('show') != 'undefined')
+            $modal.modal('show');
     };
 
     this.showError = function(status, thrownError, responseText){
