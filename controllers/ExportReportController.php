@@ -4,6 +4,8 @@
  * @copyright Copyright &copy; Daviom 2011-2013
  * Date: 2/20/13 - 11:00 AM
  */
+ini_set('memory_limit', '-1');
+ini_set('max_execution_time', 300);
 class ExportReportController extends Controller
 {
     /**

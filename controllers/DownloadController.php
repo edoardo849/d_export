@@ -5,6 +5,7 @@
  * Date: 2/20/13 - 1:47 PM
  */
 ini_set('memory_limit', '-1');
+ini_set('max_execution_time', 300);
 class DownloadController extends Controller
 {
     /**

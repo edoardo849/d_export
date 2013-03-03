@@ -11,19 +11,15 @@ header("Cache-Control: must-revalidate, post-check=0,pre-check=0");
 header("Pragma: public");
 $df = fopen("php://output", 'w');
 
-//ob_start();
-
-/*
 if(count($headers)>0)
     fputcsv($df, $headers, ';');
 
 
 foreach ($csvData as $data)
     fputcsv($df, $data, ';');
-*/
-fputcsv($df, array('ciao'), ',', '"');
+
+//fputcsv($df, array('ciao'), ',', '"');
 //fputcsv(array('headers'=>count($headers)), $data, ';');
 fclose($df);
 
 //print str_replace(array("\r\n", "\r"), "\n",  ob_get_clean());
-//ob_get_clean();
